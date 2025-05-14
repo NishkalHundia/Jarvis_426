@@ -14,12 +14,11 @@ import pyautogui
 import webbrowser
 from STT import STT
 import subprocess
-from RealtimeSTT import AudioToTextRecorder
+# from RealtimeSTT import AudioToTextRecorder
 import os
-import playsound as playsound
 
 from threading import Thread
-import pydub
+# import pydub
 from clicker import *
 
 ### Variables Declaration
@@ -50,7 +49,6 @@ class VirtualMouse:
         #cv2.namedWindow("Image", cv2.WINDOW_NORMAL)
 
         #tracker = EyeTracker("Image", self.cap)
-
 
         self.detector = ht.handDetector(maxHands=1)                  # Detecting one hand at max
 
@@ -113,187 +111,77 @@ class VirtualMouse:
             self.kb.release(Key.left)
         Thread(target=slide_left).start()
         self.slide_timer = 30
+
+    def asl(self):
+        pass
     
-    """def arduino_control(self):
-        ricko = False
-        shitto = False
-        frameR = 100
-        while True:
-            success, img = self.cap.read()
-            img = self.detector.findHands(img)                       # Finding the hand
-            lmlist, bbox = self.detector.findPosition(img)           # Getting position of hand
-
-            if len(lmlist)!=0:
-                #x1, y1 = lmlist[8][1:]
-                #x2, y2 = lmlist[12][1:]
-                x3, y3 = lmlist[16][1:]
-                #x4, y4 = lmlist[20][1:]
-                #x5, y5 = lmlist[20][1:]
-
-                fingers = self.detector.fingersUp()      # Checking if fingers are upwards
-                cv2.rectangle(img, (frameR, frameR), (self.width - frameR, self.height - frameR), (255, 0, 255), 2)   # Creating boundary box
-
-                if fingers == [1,1,0,0,0]:     # If fore finger is up and middle finger is down
-                    cursor_x = np.interp(x3, (frameR,self.width-frameR), (0,self.screen_width))
-                    cursor_y = np.interp(y3, (frameR, self.height-frameR), (0, self.screen_height))
-
-                    #print(bbox)
-
-                    self.curr_x = (self.prev_x + (cursor_x - self.prev_x)/self.smoothening)
-                    self.curr_y = (self.prev_y + (cursor_y - self.prev_y) / self.smoothening)
-
-                    action.move(self.screen_width - self.curr_x,self.curr_y)
-                    cv2.circle(img, (x3, y3), 7, (255, 0, 255), cv2.FILLED)
-                    self.prev_x, self.prev_y = self.curr_x, self.curr_y
-                    length, img, lineInfo = self.detector.findDistance(4, 8, img)
-
-                    if length < 40:     # If both fingers are really close to each other
-                        cv2.circle(img, (lineInfo[4], lineInfo[5]), 15, (0, 255, 0), cv2.FILLED)
-                        #autopy.action.click()    # Perform Click
-                        action.click()
-                        #print("click")
-                        time.sleep(0.35)
-                        if length < 25:
-                            cv2.circle(img, (lineInfo[4], lineInfo[5]), 15, (0, 255, 0), cv2.FILLED)
-                            #autopy.action.click()    # Perform Click
-                            action.click()
-                            #print("click")
-                        else:
-                            time.sleep(0.25)
-
-                elif fingers == [0,1,1,0,0]:     # If fore finger & middle finger both are up
-                    length, img, lineInfo = self.detector.findDistance(8, 12, img)
-
-                    if length < 40:
-                        #print("pressing z")
-                        self.kb.press("z")
-                    elif length > 80:
-                        #print("pressing x")
-                        self.kb.press("x")
-
-                elif fingers == [0,1,1,1,0]:     # If fore finger & middle finger both are up
-                    length, img, lineInfo = self.detector.findDistance(8, 16, img)
-
-                    if length < 50:
-                        #print("pressing a")
-                        self.kb.press("a")
-                    elif length > 100:
-                        #print("pressing d")
-                        self.kb.press("d")
-
-                elif fingers == [0,1,1,1,1]:     # If fore finger & middle finger both are up
-                    length, img, lineInfo = self.detector.findDistance(8, 20, img)
-
-                    if length < 80:
-                        #print("pressing w")
-                        self.kb.press("w")
-                    elif length > 120:
-                        #print("pressing s")
-                        self.kb.press("s")
-
-                elif fingers == [1,1,0,0,1]:     # If fore finger & middle finger both are up
-                    self.kb.press("1")
-                
-                elif fingers == [0,1,0,0,1]:     # If fore finger & middle finger both are up
-                    self.kb.press("2")
-
-                elif fingers == [1,1,1,0,0]:     # If fore finger & middle finger both are up
-                    self.kb.press("3")
-
-                elif fingers == [1,0,1,0,1] and [ricko==False]:     # If fore finger & middle finger both are up
-                    #print("snappp")
-                    self.kb.press("4")
-                    ricko == True
-                    time.sleep(0.5)
-                
-                elif fingers == [0,0,1,1,1] and shitto == False:
-                    self.kb.press("h")
-                    shitto = True
-                    time.sleep(0.5)
-
-                elif fingers == [0,0,0,0,1]:
-                    length, img, lineInfo = self.detector.findDistance(16, 20, img)
-                    if length > 60:
-                        if self.exit_timer == 0:
-                            print("exiting")
-                            self.dammo = False
-                            self.exit_timer = 60
-                            return
-
-            cTime = time.time()
-            fps = 1/(cTime-self.pTime)
-            self.pTime = cTime
-            cv2.putText(img, str(int(fps)), (20, 50), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0), 3)
-            cv2.imshow("Image", img)
-            cv2.waitKey(1)
-    """
-    def guitar(self):
-        stack_sound = pydub.AudioSegment.silent(duration=0)
+    # def guitar(self):
+    #     stack_sound = pydub.AudioSegment.silent(duration=0)
         
         
-        print("entering guitar mode")
-        timer_duration = 15
-        guitar_sound_timer = 0
-        frameR = 100
-        while True:
-            success, img = self.cap.read()
-            img = self.detector.findHands(img)                       # Finding the hand
-            lmlist, bbox = self.detector.findPosition(img)           # Getting position of hand
+    #     print("entering guitar mode")
+    #     timer_duration = 15
+    #     guitar_sound_timer = 0
+    #     frameR = 100
+    #     while True:
+    #         success, img = self.cap.read()
+    #         img = self.detector.findHands(img)                       # Finding the hand
+    #         lmlist, bbox = self.detector.findPosition(img)           # Getting position of hand
             
 
-            if len(lmlist)!=0:
+    #         if len(lmlist)!=0:
 
-                fingers = self.detector.fingersUp()      # Checking if fingers are upwards
-                cv2.rectangle(img, (frameR, frameR), (self.width - frameR, self.height - frameR), (255, 0, 255), 2) 
+    #             fingers = self.detector.fingersUp()      # Checking if fingers are upwards
+    #             cv2.rectangle(img, (frameR, frameR), (self.width - frameR, self.height - frameR), (255, 0, 255), 2) 
 
-                if fingers == [0,1,1,0,0]:
-                    if guitar_sound_timer == 0:
-                        print("E")
-                        Thread(target=playsound.playsound, args=(r'sounds\e-64kb_0aT5gGDo.mp3',)).start()
-                        stack_sound += pydub.AudioSegment.from_file(r'sounds\e-64kb_0aT5gGDo.mp3')
-                        guitar_sound_timer = timer_duration
+    #             if fingers == [0,1,1,0,0]:
+    #                 if guitar_sound_timer == 0:
+    #                     print("E")
+    #                     Thread(target=playsound.playsound, args=(r'sounds\e-64kb_0aT5gGDo.mp3',)).start()
+    #                     stack_sound += pydub.AudioSegment.from_file(r'sounds\e-64kb_0aT5gGDo.mp3')
+    #                     guitar_sound_timer = timer_duration
 
-                elif fingers == [1,1,1,1,0]:
-                    if guitar_sound_timer == 0:
-                        print("C")
-                        Thread(target=playsound.playsound, args=(r'sounds\c-64kb_tGx61ISi.mp3',)).start()
-                        stack_sound += pydub.AudioSegment.from_file(r'sounds\c-64kb_tGx61ISi.mp3')
-                        guitar_sound_timer = timer_duration
+    #             elif fingers == [1,1,1,1,0]:
+    #                 if guitar_sound_timer == 0:
+    #                     print("C")
+    #                     Thread(target=playsound.playsound, args=(r'sounds\c-64kb_tGx61ISi.mp3',)).start()
+    #                     stack_sound += pydub.AudioSegment.from_file(r'sounds\c-64kb_tGx61ISi.mp3')
+    #                     guitar_sound_timer = timer_duration
                     
 
-                elif fingers == [1,1,0,0,1]:
-                    if guitar_sound_timer == 0:
-                        print("G")
-                        Thread(target=playsound.playsound, args=(r'sounds\g-64kb_kaTudOcK.mp3',)).start()
-                        stack_sound += pydub.AudioSegment.from_file(r'sounds\g-64kb_kaTudOcK.mp3')
-                        guitar_sound_timer = timer_duration
+    #             elif fingers == [1,1,0,0,1]:
+    #                 if guitar_sound_timer == 0:
+    #                     print("G")
+    #                     Thread(target=playsound.playsound, args=(r'sounds\g-64kb_kaTudOcK.mp3',)).start()
+    #                     stack_sound += pydub.AudioSegment.from_file(r'sounds\g-64kb_kaTudOcK.mp3')
+    #                     guitar_sound_timer = timer_duration
                     
 
-                elif fingers == [1,1,1,0,0]:
-                    if guitar_sound_timer == 0:
-                        print("D")
-                        Thread(target=playsound.playsound, args=(r'sounds\d-64kb_4ymAcwfO.mp3',)).start()
-                        stack_sound += pydub.AudioSegment.from_file(r'sounds\d-64kb_4ymAcwfO.mp3')
-                        guitar_sound_timer = timer_duration
+    #             elif fingers == [1,1,1,0,0]:
+    #                 if guitar_sound_timer == 0:
+    #                     print("D")
+    #                     Thread(target=playsound.playsound, args=(r'sounds\d-64kb_4ymAcwfO.mp3',)).start()
+    #                     stack_sound += pydub.AudioSegment.from_file(r'sounds\d-64kb_4ymAcwfO.mp3')
+    #                     guitar_sound_timer = timer_duration
                     
 
-                elif fingers == [0,0,0,0,1]:
-                    length, img, lineInfo = self.detector.findDistance(16, 20, img)
-                    stack_sound.export(r"tmp\guitar_stack.mp3", format="mp3")
-                    #playsound.playsound(r"tmp\guitar_stack.mp3")
-                    if length > 60:
-                        print("exiting")
-                        self.exit_timer = 60
-                        return
+    #             elif fingers == [0,0,0,0,1]:
+    #                 length, img, lineInfo = self.detector.findDistance(16, 20, img)
+    #                 stack_sound.export(r"tmp\guitar_stack.mp3", format="mp3")
+    #                 #playsound.playsound(r"tmp\guitar_stack.mp3")
+    #                 if length > 60:
+    #                     print("exiting")
+    #                     self.exit_timer = 60
+    #                     return
 
 
-            cTime = time.time()
-            fps = 1/(cTime-self.pTime)
-            self.pTime = cTime
-            cv2.putText(img, str(int(fps)), (20, 50), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0), 3)
-            cv2.imshow("Image", img)
-            cv2.waitKey(1)
-            guitar_sound_timer = max(0, guitar_sound_timer - 1)
+    #         cTime = time.time()
+    #         fps = 1/(cTime-self.pTime)
+    #         self.pTime = cTime
+    #         cv2.putText(img, str(int(fps)), (20, 50), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0), 3)
+    #         cv2.imshow("Image", img)
+    #         cv2.waitKey(1)
+    #         guitar_sound_timer = max(0, guitar_sound_timer - 1)
 
     def run(self):
         frameR = 100
@@ -423,25 +311,10 @@ class VirtualMouse:
                     cv2.circle(img, (x3, y3), 7, (255, 0, 255), cv2.FILLED)
                     self.prev_x, self.prev_y = self.curr_x, self.curr_y
 
-                elif fingers == [1,0,1,0,1] and [self.lammo==False]:
-                    #print("snappp")
-                    self.lammo=True    
-                    webbrowser.open("https://www.youtube.com/watch?v=hw2eOKy5w9g&pp=ygUQbW91bnRhaW4gZGV3IGRhcg%3D%3D", new=2)
-                    time.sleep(0.5)
-
-                #change here for custom website
-                elif fingers == [1,1,1,1,0] and self.dammo==False:
-                    #print("ppp") 
-                    self.dammo=True
-                    #subprocess.run(r'"Tera Term.lnk"')
-                    #p = subprocess.Popen([r"C:\Users\sange\OneDrive\Documents\teraterm\ttermpro.exe", '/SHOW'])
-                    #self.arduino_control()
-                    openWeb("https://participant.turningtechnologies.com/en/join")
-                    time.sleep(0.5)
                     #p.terminate()        
-                elif fingers == [0,0,1,1,1] and self.gammo==False:
-                    self.gammo=True
-                    self.guitar()
+                elif fingers == [0,0,1,1,1]:
+                    # change to different mode
+                    self.asl()
 
                 elif fingers == [0,0,0,0,1]:
                     length, img, lineInfo = self.detector.findDistance(16, 20, img)
@@ -457,30 +330,30 @@ class VirtualMouse:
                         self.record_counter = 0
                 
 
-                elif all(lmlist[i][2] > 0 for i in [8, 12, 16, 20]):
-                    cursor_x = np.interp(x3, (frameR, self.width - frameR), (0, self.screen_width))
-                    cursor_y = np.interp(y3, (frameR, self.height - frameR), (0, self.screen_height))
+                # elif all(lmlist[i][2] > 0 for i in [8, 12, 16, 20]):
+                #     cursor_x = np.interp(x3, (frameR, self.width - frameR), (0, self.screen_width))
+                #     cursor_y = np.interp(y3, (frameR, self.height - frameR), (0, self.screen_height))
 
-                    self.curr_x = self.prev_x + (cursor_x - self.prev_x) / self.smoothening
-                    self.curr_y = self.prev_y + (cursor_y - self.prev_y) / self.smoothening
+                #     self.curr_x = self.prev_x + (cursor_x - self.prev_x) / self.smoothening
+                #     self.curr_y = self.prev_y + (cursor_y - self.prev_y) / self.smoothening
 
-                    # Check if sliding left and movement surpasses the threshold
-                    if self.curr_x < self.prev_x and abs(self.curr_x - self.prev_x) > self.x_threshold:
-                        self.slide_counter_left += 1
-                        self.slide_counter_right = 0
-                        if self.slide_counter_left > 6:
-                            if self.slide_timer == 0:
-                                self.perform_slide_left()
-                                self.record_counter = 0
-                            self.slide_counter_left = 0
-                    elif self.curr_x > self.prev_x and abs(self.curr_x - self.prev_x) > self.x_threshold:
-                        self.slide_counter_right += 1
-                        self.slide_counter_left = 0
-                        if self.slide_counter_right > 6:
-                            if self.slide_timer == 0:
-                                self.perform_slide_right()
-                                self.record_counter = 0
-                            self.slide_counter_right = 0 
+                #     # Check if sliding left and movement surpasses the threshold
+                #     if self.curr_x < self.prev_x and abs(self.curr_x - self.prev_x) > self.x_threshold:
+                #         self.slide_counter_left += 1
+                #         self.slide_counter_right = 0
+                #         if self.slide_counter_left > 6:
+                #             if self.slide_timer == 0:
+                #                 self.perform_slide_left()
+                #                 self.record_counter = 0
+                #             self.slide_counter_left = 0
+                #     elif self.curr_x > self.prev_x and abs(self.curr_x - self.prev_x) > self.x_threshold:
+                #         self.slide_counter_right += 1
+                #         self.slide_counter_left = 0
+                #         if self.slide_counter_right > 6:
+                #             if self.slide_timer == 0:
+                #                 self.perform_slide_right()
+                #                 self.record_counter = 0
+                #             self.slide_counter_right = 0 
                             
                             
                     self.prev_x, self.prev_y = self.curr_x, self.curr_y

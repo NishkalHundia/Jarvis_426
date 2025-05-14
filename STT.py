@@ -18,7 +18,7 @@ class STT():
       
         print("Model loaded")
         tts = gTTS("Recording", lang="en")
-        tts.save("tmp/recording.mp3")
+        tts.save("recording.mp3")
 
     def record_audio(self, duration=2, sample_rate=44100, save_location=os.path.join("tmp","audio.mp3")):
         

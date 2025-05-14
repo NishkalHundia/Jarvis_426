@@ -2,5 +2,9 @@ pyautogui==0.9.54
 pynput
 mouse
 faster_Whisper
+pywin32
+soundfile
+playsound
+gTTS
 opencv-python
 mediapipe
