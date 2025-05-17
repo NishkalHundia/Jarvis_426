@@ -1,7 +1,7 @@
 pyautogui==0.9.54
 pynput
 mouse
-faster_Whisper
+faster_whisper
 pywin32
 soundfile
 playsound
